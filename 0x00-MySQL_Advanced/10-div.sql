@@ -1,16 +1,14 @@
 -- Create a function SafeDiv that divides two numbers safely
-DELIMITER //
-
-CREATE FUNCTION SafeDiv(a INT, b INT)
-RETURNS DECIMAL(10,4)
+DROP FUNCTION IF EXISTS SafeDiv;
+DELIMITER $$
+CREATE FUNCTION SafeDiv (a INT, b INT)
+RETURNS FLOAT DETERMINISTIC
 BEGIN
-    DECLARE result DECIMAL(10,4);
-    IF b = 0 THEN
-        SET result = 0;
-    ELSE
+    DECLARE result FLOAT DEFAULT 0;
+
+    IF b != 0 THEN
         SET result = a / b;
     END IF;
     RETURN result;
-END//
-
+END $$
 DELIMITER ;
