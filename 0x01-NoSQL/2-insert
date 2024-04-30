@@ -1,3 +1,2 @@
 // MongoDB command to insert a document into the school collection
-// Insert a document with name attribute set to "Holberton school"
-db.school.insertOne({ name: "Holberton school" })
+db.school.insert({name: "Holberton school"});
