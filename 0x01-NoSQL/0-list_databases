@@ -1,2 +1,5 @@
+// MongoDB command to list all databases
+
 db.adminCommand('listDatabases')
+
 
