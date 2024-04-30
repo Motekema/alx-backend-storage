@@ -1,0 +1,4 @@
+// MongoDB command to list all documents with name="Holberton school" in the school collection
+
+// Find all documents in the school collection where name="Holberton school" and print them
+db.school.find({ name: "Holberton school" }).forEach(printjson)
