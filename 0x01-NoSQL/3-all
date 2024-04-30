@@ -1,0 +1,4 @@
+// MongoDB command to list all documents in the school collection
+
+// Find all documents in the school collection and print them
+db.school.find().forEach(printjson)
