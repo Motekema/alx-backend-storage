@@ -1,0 +1,4 @@
+// MongoDB command to delete documents in the school collection
+
+// Delete documents where name="Holberton school"
+db.school.deleteMany({ name: "Holberton school" });
