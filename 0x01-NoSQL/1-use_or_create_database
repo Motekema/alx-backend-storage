@@ -1,0 +1,4 @@
+// MongoDB command to create or use the database my_db
+
+// Use the my_db database if it exists, otherwise create it
+use my_db
