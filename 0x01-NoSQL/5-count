@@ -1,0 +1,4 @@
+// MongoDB command to count the number of documents in the school collection
+
+// Print the count of documents in the school collection
+print(db.school.count())
