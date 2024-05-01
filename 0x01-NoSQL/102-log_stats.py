@@ -2,6 +2,8 @@
 """
 Module documentation
 """
+
+
 def log_stats(mongo_collection):
     """
     Prints some stats about Nginx logs stored in MongoDB
