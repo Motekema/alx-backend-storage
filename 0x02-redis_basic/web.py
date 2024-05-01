@@ -2,32 +2,38 @@
 """
 Web Cache Module
 """
-from functools import wraps
 import redis
 import requests
+from functools import wraps
 from typing import Callable
 
-redis_ = redis.Redis()
+
+redis_store = redis.Redis()
+'''The module-level Redis instance.
+'''
 
 
-def count_requests(method: Callable) -> Callable:
-    """ Decorator for counting """
+def data_cacher(method: Callable) -> Callable:
+    '''Cache the output of fetched data.
+    '''
     @wraps(method)
-    def wrapper(url):  # sourcery skip: use-named-expression
-        """ Wrapper for decorator """
-        redis_.incr(f"count:{url}")
-        cached_html = redis_.get(f"cached:{url}")
-        if cached_html:
-            return cached_html.decode('utf-8')
-        html = method(url)
-        redis_.setex(f"cached:{url}", 10, html)
-        return html
+    def invoker(url) -> str:
+        ''' The wrapper function for caching the output.
+        '''
+        redis_store.incr(f'count:{url}')
+        result = redis_store.get(f'result:{url}')
+        if result:
+            return result.decode('utf-8')
+        result = method(url)
+        redis_store.set(f'count:{url}', 0)
+        redis_store.setex(f'result:{url}', 10, result)
+        return result
+    return invoker
 
-    return wrapper
 
-
-@count_requests
+@data_cacher
 def get_page(url: str) -> str:
-    """ Obtain the HTML contents of a  URL """
-    req = requests.get(url)
-    return req.text
+    '''Display the content of a URL after caching the request response,
+    and tracking the request.
+    '''
+    return requests.get(url).text
