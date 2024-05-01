@@ -11,13 +11,26 @@ def print_nginx_request_logs(nginx_collection):
     total_logs = nginx_collection.count_documents({})
     print('{} logs'.format(total_logs))
 
-    print('Methods:')
-    methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
-    for method in methods:
-        req_count = nginx_collection.count_documents({'method': method})
-        print('\tmethod {}: {}'.format(method, req_count))
+    methods = {
+        'GET': 0,
+        'POST': 0,
+        'PUT': 0,
+        'PATCH': 0,
+        'DELETE': 0
+    }
+    status_checks_count = 0
 
-    status_checks_count = nginx_collection.count_documents({'method': 'GET', 'path': '/status'})
+    for log in nginx_collection.find():
+        method = log.get('method', '')
+        if method in methods:
+            methods[method] += 1
+        if method == 'GET' and log.get('path', '') == '/status':
+            status_checks_count += 1
+
+    print('Methods:')
+    for method, count in methods.items():
+        print('\tmethod {}: {}'.format(method, count))
+
     print('{} status check'.format(status_checks_count))
 
 
